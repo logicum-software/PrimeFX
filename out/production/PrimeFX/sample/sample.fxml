@@ -51,12 +51,12 @@
             <Insets left="220.0" />
          </GridPane.margin>
       </Label>
-      <Button fx:id="ButtonCompute" mnemonicParsing="false" text="Berechnung starten" GridPane.rowIndex="4">
+      <Button fx:id="ButtonCompute" mnemonicParsing="false" onAction="#onButtonCompute" text="Berechnung starten" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="14.0" right="14.0" top="14.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="ButtonBeenden" mnemonicParsing="false" text="Beenden" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+      <Button fx:id="ButtonBeenden" mnemonicParsing="false" onAction="#onButtonBeenden" text="Beenden" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="14.0" right="14.0" top="14.0" />
          </GridPane.margin>
