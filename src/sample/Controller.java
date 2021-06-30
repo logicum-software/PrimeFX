@@ -8,6 +8,8 @@ import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
 import java.beans.EventHandler;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     public ProgressBar ProgressBarCompute;
@@ -15,6 +17,8 @@ public class Controller {
     public Label LabelDuration;
     public Button ButtonCompute;
     public Button ButtonBeenden;
+    private static final List<Integer> Dividends = new ArrayList<>();
+    private static final List<Integer> Divisors = new ArrayList<>();
 
     Task<Integer> task = new Task<Integer>() {
         @Override protected Integer call() throws Exception {
@@ -48,6 +52,12 @@ public class Controller {
     }
 
     public void onButtonCompute(ActionEvent actionEvent) {
+        for (int i = 3; i <= 100000; i++)
+            Dividends.add(i);
+
+        for (int z = 2; z <= 50000; z++)
+            Divisors.add(z);
+
         ProgressBarCompute.progressProperty().bind(task.progressProperty());
         new Thread(task).start();
     }
