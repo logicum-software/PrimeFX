@@ -30,7 +30,7 @@ public class Controller {
                 //Block the thread for a short time, but be sure
                 //to check the InterruptedException for cancellation
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(10);
                 } catch (InterruptedException interrupted) {
                     if (isCancelled()) {
                         updateMessage("Cancelled");
