@@ -17,32 +17,32 @@ public class Controller {
     public Label LabelDuration;
     public Button ButtonCompute;
     public Button ButtonBeenden;
+
+    private int nPrimes;
     private static final List<Integer> Dividends = new ArrayList<>();
     private static final List<Integer> Divisors = new ArrayList<>();
 
     Task<Integer> task = new Task<Integer>() {
         @Override protected Integer call() throws Exception {
-            int iterations;
-            for (iterations = 0; iterations < 1000; iterations++) {
+
+            for (int current : Dividends) {
                 if (isCancelled()) {
                     updateMessage("Cancelled");
                     break;
                 }
-                updateMessage("Iteration " + iterations);
-                updateProgress(iterations, 1000);
-
-                //Block the thread for a short time, but be sure
-                //to check the InterruptedException for cancellation
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException interrupted) {
-                    if (isCancelled()) {
-                        updateMessage("Cancelled");
+                updateProgress(current, 1000000);
+                updateMessage(Integer.toString(nPrimes));
+                for (int divisor : Divisors) {
+                    if (divisor <= current / 2) {
+                        if ((float) current % divisor == 0)
+                            break;
+                    } else {
+                        nPrimes++;
                         break;
                     }
                 }
             }
-            return iterations;
+            return nPrimes;
         }
     };
 
@@ -52,13 +52,15 @@ public class Controller {
     }
 
     public void onButtonCompute(ActionEvent actionEvent) {
-        for (int i = 3; i <= 100000; i++)
+        for (int i = 3; i <= 1000000; i++)
             Dividends.add(i);
 
-        for (int z = 2; z <= 50000; z++)
+        for (int z = 2; z <= 500000; z++)
             Divisors.add(z);
 
+        nPrimes = 1;
         ProgressBarCompute.progressProperty().bind(task.progressProperty());
+        LabelNumber.textProperty().bind(task.messageProperty());
         new Thread(task).start();
     }
 }
