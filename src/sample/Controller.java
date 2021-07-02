@@ -30,7 +30,7 @@ public class Controller {
                     updateMessage("Cancelled");
                     break;
                 }
-                updateProgress(current, 1000000);
+                updateProgress(current, 100000);
                 updateMessage(Integer.toString(nPrimes));
                 for (int divisor : Divisors) {
                     if (divisor <= current / 2) {
@@ -52,10 +52,10 @@ public class Controller {
     }
 
     public void onButtonCompute(ActionEvent actionEvent) {
-        for (int i = 3; i <= 1000000; i++)
+        for (int i = 3; i <= 100000; i++)
             Dividends.add(i);
 
-        for (int z = 2; z <= 500000; z++)
+        for (int z = 2; z <= 50000; z++)
             Divisors.add(z);
 
         nPrimes = 1;
