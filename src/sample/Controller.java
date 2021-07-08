@@ -2,18 +2,21 @@ package sample;
 
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
 import java.beans.EventHandler;
+import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class Controller {
     public ProgressBar ProgressBarCompute;
@@ -23,6 +26,7 @@ public class Controller {
     public Button ButtonBeenden;
 
     private int nPrimes;
+    private boolean IsStarted = false;
     private static final List<Integer> Dividends = new ArrayList<>();
     private static final List<Integer> Divisors = new ArrayList<>();
 
@@ -34,7 +38,7 @@ public class Controller {
                     updateMessage("Cancelled");
                     break;
                 }
-                updateProgress(current, 1000000);
+                updateProgress(current, 100000);
                 updateMessage(Integer.toString(nPrimes));
                 for (int divisor : Divisors) {
                     if (divisor <= current / 2) {
@@ -56,15 +60,24 @@ public class Controller {
     }
 
     public void onButtonCompute(ActionEvent actionEvent) {
-        for (int i = 3; i <= 1000000; i++)
-            Dividends.add(i);
 
-        for (int z = 2; z <= 500000; z++)
-            Divisors.add(z);
+        if (IsStarted) {
+            IsStarted = false;
+            task.cancel();
+            ButtonCompute.setText("Berechnung starten");
+        } else {
+            ProgressBarCompute.progressProperty().bind(task.progressProperty());
+            LabelNumber.textProperty().bind(task.messageProperty());
+            IsStarted = true;
+            ButtonCompute.setText("Abbrechen");
+            for (int i = 3; i <= 100000; i++)
+                Dividends.add(i);
 
-        nPrimes = 1;
-        ProgressBarCompute.progressProperty().bind(task.progressProperty());
-        LabelNumber.textProperty().bind(task.messageProperty());
-        new Thread(task).start();
+            for (int z = 2; z <= 50000; z++)
+                Divisors.add(z);
+
+            nPrimes = 1;
+            new Thread(task).start();
+        }
     }
 }
