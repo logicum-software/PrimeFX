@@ -31,12 +31,9 @@ public class Controller {
     private boolean IsStarted = false;
     private static final List<Integer> Dividends = new ArrayList<>();
     private static final List<Integer> Divisors = new ArrayList<>();
-    private long Start, End;
-    private StringProperty Duration;
 
     Task<Integer> task = new Task<Integer>() {
         @Override protected Integer call() throws Exception {
-            Start = System.nanoTime();
             for (int current : Dividends) {
                 if (isCancelled()) {
                     updateMessage("Cancelled");
@@ -53,8 +50,6 @@ public class Controller {
                         break;
                     }
                 }
-                End = System.nanoTime();
-                Duration.setValue(String.format("%d Sekunden", End - Start));
             }
             return nPrimes;
         }
@@ -72,10 +67,8 @@ public class Controller {
             task.cancel();
             ButtonCompute.setText("Berechnung starten");
         } else {
-            Duration = new SimpleStringProperty();
             ProgressBarCompute.progressProperty().bind(task.progressProperty());
             LabelNumber.textProperty().bind(task.messageProperty());
-            LabelDuration.textProperty().bind(Duration);
             IsStarted = true;
             ButtonCompute.setText("Abbrechen");
             for (int i = 3; i <= 100000; i++)
