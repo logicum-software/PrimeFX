@@ -1,8 +1,8 @@
 package sample;
 
+import javafx.animation.AnimationTimer;
 import javafx.beans.Observable;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableStringValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -32,13 +32,34 @@ public class Controller {
     public Button ButtonBeenden;
 
     private int nPrimes;
-    private boolean IsStarted = false;
-    private Instant StartTime, EndTime;
-    private long Duration;
-    private String DurString = "not calculated";
-    private SimpleStringProperty ObsString = new SimpleStringProperty(DurString);
+    private BooleanProperty running = new SimpleBooleanProperty();
+    private DoubleProperty time = new SimpleDoubleProperty();
     private static final List<Integer> Dividends = new ArrayList<>();
     private static final List<Integer> Divisors = new ArrayList<>();
+
+    AnimationTimer timer = new AnimationTimer() {
+
+        private long startTime ;
+
+        @Override
+        public void start() {
+            startTime = System.currentTimeMillis();
+            running.set(true);
+            super.start();
+        }
+
+        @Override
+        public void stop() {
+            running.set(false);
+            super.stop();
+        }
+
+        @Override
+        public void handle(long timestamp) {
+            long now = System.currentTimeMillis();
+            time.set((now - startTime) / 1000.0);
+        }
+    };
 
     Task<Integer> task = new Task<Integer>() {
         @Override protected Integer call() throws Exception {
@@ -49,9 +70,6 @@ public class Controller {
                 }
                 updateProgress(current, 100000);
                 updateMessage(Integer.toString(nPrimes));
-                EndTime = Instant.now();
-                Duration = ChronoUnit.SECONDS.between(StartTime, EndTime);
-                DurString = String.format("%d", Duration);
 
                 for (int divisor : Divisors) {
                     if (divisor <= current / 2) {
@@ -63,6 +81,7 @@ public class Controller {
                     }
                 }
             }
+            timer.stop();
             return nPrimes;
         }
     };
@@ -74,16 +93,17 @@ public class Controller {
 
     public void onButtonCompute(ActionEvent actionEvent) {
 
-        if (IsStarted) {
-            IsStarted = false;
+        if (running.get()) {
+            timer.stop();
+            running.set(false);
             task.cancel();
             ButtonCompute.setText("Berechnung starten");
         } else {
-            StartTime = Instant.now();
             ProgressBarCompute.progressProperty().bind(task.progressProperty());
             LabelNumber.textProperty().bind(task.messageProperty());
-            LabelDuration.textProperty().bind(ObsString);
-            IsStarted = true;
+            LabelDuration.textProperty().bind(time.asString("%.3f Sekunden"));
+            running.set(true);
+            timer.start();
             ButtonCompute.setText("Abbrechen");
             for (int i = 3; i <= 100000; i++)
                 Dividends.add(i);
