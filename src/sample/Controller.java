@@ -1,9 +1,10 @@
 package sample;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.Observable;
-import javafx.beans.property.*;
-import javafx.beans.value.ObservableStringValue;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,17 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
-import java.beans.EventHandler;
-import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.temporal.ChronoField;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class Controller {
     public ProgressBar ProgressBarCompute;
@@ -82,6 +74,7 @@ public class Controller {
                 }
             }
             timer.stop();
+            ButtonCompute.setDisable(false);
             return nPrimes;
         }
     };
@@ -93,15 +86,17 @@ public class Controller {
 
     public void onButtonCompute(ActionEvent actionEvent) {
 
+        ProgressBarCompute.progressProperty().bind(task.progressProperty());
+        LabelNumber.textProperty().bind(task.messageProperty());
+        LabelDuration.textProperty().bind(time.asString("%.3f Sekunden"));
+        ButtonCompute.setDisable(true);
+
         if (running.get()) {
             timer.stop();
             running.set(false);
             task.cancel();
             ButtonCompute.setText("Berechnung starten");
         } else {
-            ProgressBarCompute.progressProperty().bind(task.progressProperty());
-            LabelNumber.textProperty().bind(task.messageProperty());
-            LabelDuration.textProperty().bind(time.asString("%.3f Sekunden"));
             running.set(true);
             timer.start();
             ButtonCompute.setText("Abbrechen");
