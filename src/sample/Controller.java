@@ -24,10 +24,11 @@ public class Controller {
     public Button ButtonBeenden;
 
     private int nPrimes;
-    private BooleanProperty running = new SimpleBooleanProperty();
-    private DoubleProperty time = new SimpleDoubleProperty();
+    private final BooleanProperty running = new SimpleBooleanProperty();
+    private final DoubleProperty time = new SimpleDoubleProperty();
     private static final List<Integer> Dividends = new ArrayList<>();
     private static final List<Integer> Divisors = new ArrayList<>();
+    //private static final List<Boolean> IsPrime = new ArrayList<>();
 
     AnimationTimer timer = new AnimationTimer() {
 
@@ -99,7 +100,6 @@ public class Controller {
         } else {
             running.set(true);
             timer.start();
-            ButtonCompute.setText("Abbrechen");
             for (int i = 3; i <= 100000; i++)
                 Dividends.add(i);
 
