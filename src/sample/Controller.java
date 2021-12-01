@@ -1,28 +1,16 @@
 package sample;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.Observable;
 import javafx.beans.property.*;
-import javafx.beans.value.ObservableStringValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
-import java.beans.EventHandler;
-import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.temporal.ChronoField;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class Controller {
     public ProgressBar ProgressBarCompute;
@@ -32,8 +20,8 @@ public class Controller {
     public Button ButtonBeenden;
 
     private int nPrimes;
-    private BooleanProperty running = new SimpleBooleanProperty();
-    private DoubleProperty time = new SimpleDoubleProperty();
+    private final BooleanProperty running = new SimpleBooleanProperty();
+    private final DoubleProperty time = new SimpleDoubleProperty();
     private static final List<Integer> Dividends = new ArrayList<>();
     private static final List<Integer> Divisors = new ArrayList<>();
 
