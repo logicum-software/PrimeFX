@@ -1,9 +1,13 @@
 package sample;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -24,6 +28,7 @@ public class Controller {
     private final DoubleProperty time = new SimpleDoubleProperty();
     private static final List<Integer> Dividends = new ArrayList<>();
     private static final List<Integer> Divisors = new ArrayList<>();
+    //private static final List<Boolean> IsPrime = new ArrayList<>();
 
     AnimationTimer timer = new AnimationTimer() {
 
@@ -70,6 +75,7 @@ public class Controller {
                 }
             }
             timer.stop();
+            ButtonCompute.setDisable(false);
             return nPrimes;
         }
     };
@@ -81,18 +87,19 @@ public class Controller {
 
     public void onButtonCompute(ActionEvent actionEvent) {
 
+        ProgressBarCompute.progressProperty().bind(task.progressProperty());
+        LabelNumber.textProperty().bind(task.messageProperty());
+        LabelDuration.textProperty().bind(time.asString("%.3f Sekunden"));
+        ButtonCompute.setDisable(true);
+
         if (running.get()) {
             timer.stop();
             running.set(false);
             task.cancel();
             ButtonCompute.setText("Berechnung starten");
         } else {
-            ProgressBarCompute.progressProperty().bind(task.progressProperty());
-            LabelNumber.textProperty().bind(task.messageProperty());
-            LabelDuration.textProperty().bind(time.asString("%.3f Sekunden"));
             running.set(true);
             timer.start();
-            ButtonCompute.setText("Abbrechen");
             for (int i = 3; i <= 100000; i++)
                 Dividends.add(i);
 
