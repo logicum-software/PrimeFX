@@ -4,13 +4,15 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<GridPane alignment="center" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="sample.Controller">
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints maxHeight="29.0" minHeight="10.0" prefHeight="29.0" />
       <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="20.0" />
@@ -21,45 +23,65 @@
       <ColumnConstraints minWidth="500.0" prefWidth="100.0" />
    </columnConstraints>
    <children>
-      <Label text="Fortschritt">
+      <Label text="Fortschritt" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets left="14.0" top="14.0" />
          </GridPane.margin>
       </Label>
-      <ProgressBar fx:id="ProgressBarCompute" prefHeight="16.0" prefWidth="484.0" progress="0.0" GridPane.rowIndex="1">
+      <ProgressBar fx:id="ProgressBarCompute" prefHeight="16.0" prefWidth="484.0" progress="0.0" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets bottom="14.0" left="14.0" right="14.0" />
          </GridPane.margin>
       </ProgressBar>
-      <Label text="Anzahl gefundener Primzahlen:" GridPane.rowIndex="2">
+      <Label text="Anzahl gefundener Primzahlen:" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="14.0" right="14.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="LabelNumber" text="nicht berechnet..." GridPane.rowIndex="2">
+      <Label fx:id="LabelNumber" text="nicht berechnet..." GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="220.0" right="14.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Dauer der Berechnung:" GridPane.rowIndex="3">
+      <Label text="Dauer der Berechnung:" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="14.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="LabelDuration" text="nicht berechnet..." GridPane.rowIndex="3">
+      <Label fx:id="LabelDuration" text="nicht berechnet..." GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="220.0" />
          </GridPane.margin>
       </Label>
-      <Button fx:id="ButtonCompute" mnemonicParsing="false" onAction="#onButtonCompute" text="Berechnung starten" GridPane.rowIndex="4">
+      <Button fx:id="ButtonCompute" mnemonicParsing="false" onAction="#onButtonCompute" text="Berechnung starten" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets left="14.0" right="14.0" top="14.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="ButtonBeenden" mnemonicParsing="false" onAction="#onButtonBeenden" text="Beenden" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+      <Button fx:id="ButtonBeenden" mnemonicParsing="false" onAction="#onButtonBeenden" text="Beenden" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets left="14.0" right="14.0" top="14.0" />
          </GridPane.margin>
       </Button>
+      <Label text="Startzahl:">
+         <GridPane.margin>
+            <Insets left="14.0" top="14.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="TextFieldStart">
+         <GridPane.margin>
+            <Insets left="78.0" right="250.0" top="14.0" />
+         </GridPane.margin>
+      </TextField>
+      <Label text="Endzahl:" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets left="14.0" top="14.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="TextFieldEnd" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets left="78.0" right="250.0" top="14.0" />
+         </GridPane.margin>
+      </TextField>
    </children>
 </GridPane>
