@@ -22,11 +22,13 @@ public class Controller {
     public Button ButtonCompute;
     public Button ButtonBeenden;
 
-    private int nPrimes;
-    private final BooleanProperty running = new SimpleBooleanProperty();
-    private final DoubleProperty time = new SimpleDoubleProperty();
-    private static final List<Integer> Dividends = new ArrayList<>();
-    private static final List<Integer> Divisors = new ArrayList<>();
+    private static int nPrimes;
+    private static final BooleanProperty running = new SimpleBooleanProperty();
+    private static final DoubleProperty time = new SimpleDoubleProperty();
+    private static List<Integer> Dividends = new ArrayList<>();
+    private static List<Integer> Divisors = new ArrayList<>();
+    private static Integer End = 100000;
+    private static Integer Start = 3;
 
     AnimationTimer timer = new AnimationTimer() {
 
@@ -52,14 +54,19 @@ public class Controller {
         }
     };
 
-    Task<Integer> task = new Task<Integer>() {
+    Task<Integer> task = new Task<>() {
         @Override protected Integer call() throws Exception {
+            if (Start < 3)
+                nPrimes = 0;
+            else
+                nPrimes = 1;
+
             for (int current : Dividends) {
                 if (isCancelled()) {
                     updateMessage("Cancelled");
                     break;
                 }
-                updateProgress(current, 100000);
+                updateProgress(current, End - Start);
                 updateMessage(Integer.toString(nPrimes));
 
                 for (int divisor : Divisors) {
@@ -98,13 +105,12 @@ public class Controller {
         } else {
             running.set(true);
             timer.start();
-            for (int i = 3; i <= 100000; i++)
+            for (int i = Start; i <= End; i++)
                 Dividends.add(i);
 
-            for (int z = 2; z <= 50000; z++)
+            for (int z = 2; z <= End / 2; z++)
                 Divisors.add(z);
 
-            nPrimes = 1;
             new Thread(task).start();
         }
     }
