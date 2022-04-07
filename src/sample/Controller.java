@@ -1,17 +1,18 @@
 package sample;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.converter.NumberStringConverter;
 
+import java.text.CompactNumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,14 +22,18 @@ public class Controller {
     public Label LabelDuration;
     public Button ButtonCompute;
     public Button ButtonBeenden;
+    public TextField TextFieldStart;
+    public TextField TextFieldEnd;
 
     private static int nPrimes;
     private static final BooleanProperty running = new SimpleBooleanProperty();
     private static final DoubleProperty time = new SimpleDoubleProperty();
     private static List<Integer> Dividends = new ArrayList<>();
     private static List<Integer> Divisors = new ArrayList<>();
-    private static Integer End = 100000;
-    private static Integer Start = 3;
+    private static ObservableValue<String> Start =
+            new SimpleIntegerProperty(3).asString();
+    private static ObservableValue<String> End =
+            new SimpleIntegerProperty(100000).asString();
 
     AnimationTimer timer = new AnimationTimer() {
 
@@ -56,7 +61,7 @@ public class Controller {
 
     Task<Integer> task = new Task<>() {
         @Override protected Integer call() throws Exception {
-            if (Start < 3)
+            if (Integer.getInteger(Start.toString()) < 3)
                 nPrimes = 0;
             else
                 nPrimes = 1;
@@ -66,7 +71,8 @@ public class Controller {
                     updateMessage("Cancelled");
                     break;
                 }
-                updateProgress(current, End - Start);
+                updateProgress(current, Integer.getInteger(End.toString()) -
+                        Integer.getInteger(Start.toString()));
                 updateMessage(Integer.toString(nPrimes));
 
                 for (int divisor : Divisors) {
@@ -92,6 +98,8 @@ public class Controller {
 
     public void onButtonCompute(ActionEvent actionEvent) {
 
+        TextFieldStart.textProperty().bindBidirectional((Property<String>) Start);
+        TextFieldEnd.textProperty().bindBidirectional((Property<String>) End);
         ProgressBarCompute.progressProperty().bind(task.progressProperty());
         LabelNumber.textProperty().bind(task.messageProperty());
         LabelDuration.textProperty().bind(time.asString("%.3f Sekunden"));
@@ -105,10 +113,11 @@ public class Controller {
         } else {
             running.set(true);
             timer.start();
-            for (int i = Start; i <= End; i++)
+            for (int i = Integer.getInteger(Start.toString());
+                 i <= Integer.getInteger(End.toString()); i++)
                 Dividends.add(i);
 
-            for (int z = 2; z <= End / 2; z++)
+            for (int z = 2; z <= Integer.getInteger(End.toString()) / 2; z++)
                 Divisors.add(z);
 
             new Thread(task).start();
