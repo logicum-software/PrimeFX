@@ -27,7 +27,6 @@ public class Controller {
     private final DoubleProperty time = new SimpleDoubleProperty();
     private static final List<Integer> Dividends = new ArrayList<>();
     private static final List<Integer> Divisors = new ArrayList<>();
-    //private static final List<Boolean> IsPrime = new ArrayList<>();
 
     AnimationTimer timer = new AnimationTimer() {
 
